@@ -59,6 +59,10 @@ from liars_dice_environment_function import (
     rollout_full_prompt_and_completion_parallelized_curriculum as liars_dice_rollout_full_prompt_and_completion_parallelized_curriculum,
     rollout_reward_func as liars_dice_rollout_reward_func,
 )
+from leduc_poker_environment_function import (
+    game_rollout_first_prompt_and_completion as leduc_rollout_first_prompt_and_completion,
+    rollout_reward_func as leduc_rollout_reward_func
+)
 
 LOCAL_RANK = int(os.getenv("LOCAL_RANK", "0"))
 STANDARD_GRPO_EXTRA_COLUMN = "extra_data"
@@ -859,6 +863,10 @@ def main():
                 reward_func = gin_rummy_rollout_reward_func
                 training_args.initial_max_turn = 50
                 trainer_class = ActionMaskedGRPOTrainer
+            elif training_args.environment_name == "leduc_poker":
+                rollout_func = leduc_rollout_first_prompt_and_completion
+                reward_func = leduc_rollout_reward_func
+                trainer_class = ActionMaskedGRPOTrainer
             elif training_args.environment_name == "liars_dice":
                 rollout_func = liars_dice_rollout_full_prompt_and_completion_parallelized_curriculum
                 reward_func = liars_dice_rollout_reward_func
@@ -899,6 +907,10 @@ def main():
                 reward_func = gin_rummy_rollout_reward_func
                 training_args.initial_max_turn = 50
                 trainer_class = GRPOTrainer
+            elif training_args.environment_name == "leduc_poker":
+                rollout_func = leduc_rollout_first_prompt_and_completion
+                reward_func = leduc_rollout_reward_func
+                trainer_class = ActionMaskedGRPOTrainer
             elif training_args.environment_name == "liars_dice":
                 rollout_func = liars_dice_rollout_full_prompt_and_completion_parallelized_curriculum
                 reward_func = liars_dice_rollout_reward_func
@@ -936,6 +948,10 @@ def main():
                 rollout_func = gin_rummy_rollout_full_prompt_and_completion_parallelized_curriculum
                 reward_func = gin_rummy_rollout_reward_func
                 training_args.initial_max_turn = 50
+                trainer_class = ActionMaskedGRPOTrainer
+            elif training_args.environment_name == "leduc_poker":
+                rollout_func = leduc_rollout_first_prompt_and_completion
+                reward_func = leduc_rollout_reward_func
                 trainer_class = ActionMaskedGRPOTrainer
             elif training_args.environment_name == "liars_dice":
                 rollout_func = liars_dice_rollout_full_prompt_and_completion_parallelized_curriculum
